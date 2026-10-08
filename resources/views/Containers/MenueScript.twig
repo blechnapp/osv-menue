@@ -1,0 +1,68 @@
+<script>
+/* OSV Menü: zusätzliche Einträge im Hauptmenü. Kein MutationObserver, kein Vue.component, kein ceresStore. */
+(function () {
+  var E = {{ eintraegeJson | raw }};
+  var MARKE = "data-osvm";
+  function norm(u) { u = String(u || "").split("#")[0].split("?")[0]; return u.charAt(u.length - 1) === "/" ? u : u + "/"; }
+  function nachbarn(wurzel, adresse) {
+    return [].filter.call(wurzel.querySelectorAll("a[href]"), function (a) { return norm(a.getAttribute("href")) === norm(adresse); });
+  }
+  function einsetzen(nachbarLi, neu, wohin) {
+    nachbarLi.parentNode.insertBefore(neu, wohin === "nach" ? nachbarLi.nextSibling : nachbarLi);
+  }
+  // Rechner: das Menü kommt fertig vom Server, einmal nach dem Start der Ceres-App ergänzen
+  function rechner() {
+    [].forEach.call(document.querySelectorAll(".main-navbar-collapsable"), function (menue) {
+      E.forEach(function (e) {
+        if (nachbarn(menue, e.u).length) return; // schon da
+        nachbarn(menue, e.n).forEach(function (a) {
+          var li = a.closest("li.level1");
+          var huelle = li && li.parentNode && li.parentNode.classList.contains("collapse-inner") ? li.parentNode.parentNode : null;
+          if (!huelle) return;
+          var neu = huelle.cloneNode(true);
+          neu.setAttribute(MARKE, "");
+          var link = neu.querySelector("a");
+          link.setAttribute("href", e.u); link.textContent = e.t;
+          einsetzen(huelle, neu, e.w);
+        });
+      });
+    });
+  }
+  // Handy: Ceres baut die Liste bei jedem Ebenenwechsel neu; unsere Zeilen jedes Mal entfernen und passend neu setzen
+  function handy() {
+    var nav = document.querySelector(".mobile-navigation");
+    if (!nav) return;
+    [].forEach.call(nav.querySelectorAll("[" + MARKE + "]"), function (x) { x.parentNode.removeChild(x); });
+    var aktiv = nav.querySelector("ul.mainmenu.menu-active");
+    if (!aktiv) return;
+    E.forEach(function (e) {
+      nachbarn(aktiv, e.n).forEach(function (a) {
+        var li = a.closest("li");
+        if (!li || li.parentNode !== aktiv) return;
+        var neu = document.createElement("li");
+        neu.className = "ddown"; neu.setAttribute(MARKE, "");
+        var link = document.createElement("a");
+        link.setAttribute("href", e.u); link.setAttribute("itemprop", "name"); link.textContent = e.t;
+        neu.appendChild(link);
+        einsetzen(li, neu, e.w);
+      });
+    });
+  }
+  var spaeter = null;
+  function handyGleich() { clearTimeout(spaeter); handy(); spaeter = setTimeout(handy, 350); }
+  function start(versuch) {
+    var app = window.vueApp;
+    if (!(app && app._isMounted) && versuch < 40) { setTimeout(function () { start(versuch + 1); }, 100); return; }
+    try { rechner(); } catch (x) { /* Menü bleibt wie es ist */ }
+    // Handy: nach jedem Tippen im Menü (Ebenenwechsel, Öffnen) neu setzen
+    document.addEventListener("click", function (ev) {
+      var t = ev.target;
+      if (t && t.closest && (t.closest(".mobile-navigation") || t.closest("#mobile-navigation-toggler"))) {
+        setTimeout(function () { try { handyGleich(); } catch (x) { /* egal */ } }, 0);
+      }
+    }, true);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function () { start(0); });
+  else start(0);
+})();
+</script>

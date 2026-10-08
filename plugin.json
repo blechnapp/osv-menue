@@ -1,0 +1,27 @@
+{
+  "name": "OSVMenue",
+  "namespace": "OSVMenue",
+  "type": "general",
+  "version": "0.1.0",
+  "license": "proprietary",
+  "author": "OSV",
+  "shortDescription": "Zusätzliche Einträge im Ceres-Hauptmenü (Rechner und Handy), ohne neue Kategorien.",
+  "description": "Fügt konfigurierbare Links in das Hauptmenü ein, z. B. „Herrnhuter Sterne“ unter Weihnachten vor „Weihnachtssterne“. Einträge in der Plugin-Konfiguration, eine Zeile je Eintrag.",
+  "categories": ["3527"],
+  "require": {
+    "IO": ">=5.0.0",
+    "Ceres": ">=5.0.0"
+  },
+  "serviceProvider": "OSVMenue\\Providers\\OSVMenueServiceProvider",
+  "dependencies": {},
+  "javaScriptFiles": [],
+  "runOnBuild": [],
+  "dataProviders": [
+    {
+      "key": "OSVMenue\\Containers\\MenueScript",
+      "name": "OSV Menü Einträge",
+      "description": "Fügt die konfigurierten Einträge ins Hauptmenü ein.",
+      "defaultLayoutContainer": "Ceres::Script.AfterScriptsLoaded"
+    }
+  ]
+}
