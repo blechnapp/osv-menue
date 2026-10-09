@@ -8,8 +8,15 @@ Fügt zusätzliche Links ins Ceres-Hauptmenü ein, am Rechner (Aufklappmenü) un
 
 Beispiel: `Herrnhuter Sterne | /herrnhuter-sterne/ | vor | /weihnachten/weihnachtssterne/`
 
-Der neue Eintrag erscheint in derselben Ebene wie der Nachbar, direkt davor oder danach.
-Ist das Ziel dort schon verlinkt, wird nichts doppelt eingefügt.
+Weiteres Beispiel, letzter Punkt in der oberen Leiste: `Ersatzteile | /weihnachten/ersatzteile/ | nach | /sale/`
+
+Der neue Eintrag erscheint in derselben Ebene wie der Nachbar, direkt davor oder danach,
+im Aufklappmenü oder in der oberen Leiste. Ist das Ziel in dieser Ebene schon verlinkt,
+wird nichts doppelt eingefügt; Links in anderen Ebenen zählen nicht.
+
+## Versionen
+- 0.2.0: Einträge auch in der oberen Leiste (Rechner); Doppelt-Prüfung nur noch je Ebene.
+- 0.1.0: Einträge im Aufklappmenü (Rechner) und in jeder Ebene des Handy-Menüs.
 
 ## Hinweise
 - Rechner: Das Menü kommt vom Server, das Skript ergänzt es einmal nach dem Start der Ceres-App.

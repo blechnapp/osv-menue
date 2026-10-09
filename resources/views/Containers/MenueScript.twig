@@ -10,20 +10,39 @@
   function einsetzen(nachbarLi, neu, wohin) {
     nachbarLi.parentNode.insertBefore(neu, wohin === "nach" ? nachbarLi.nextSibling : nachbarLi);
   }
+  // Ist das Ziel in dieser Ebene schon verlinkt? Nur der erste Link je Zeile zählt, Untermenüs nicht
+  function schonDa(ebene, adresse) {
+    return [].some.call(ebene.children, function (k) {
+      var x = k.querySelector("a[href]");
+      return x && norm(x.getAttribute("href")) === norm(adresse);
+    });
+  }
   // Rechner: das Menü kommt fertig vom Server, einmal nach dem Start der Ceres-App ergänzen
   function rechner() {
     [].forEach.call(document.querySelectorAll(".main-navbar-collapsable"), function (menue) {
       E.forEach(function (e) {
-        if (nachbarn(menue, e.u).length) return; // schon da
         nachbarn(menue, e.n).forEach(function (a) {
-          var li = a.closest("li.level1");
-          var huelle = li && li.parentNode && li.parentNode.classList.contains("collapse-inner") ? li.parentNode.parentNode : null;
-          if (!huelle) return;
-          var neu = huelle.cloneNode(true);
+          var li = a.closest("li"), zeile = null, neu = null, link;
+          if (!li || !li.parentNode) return;
+          if (li.classList.contains("level1") && li.parentNode.classList.contains("collapse-inner")) {
+            // Aufklappmenü: Hülle <li><ul class="collapse-inner"><li class="level1">… des Nachbarn übernehmen
+            zeile = li.parentNode.parentNode;
+            if (schonDa(zeile.parentNode, e.u)) return;
+            neu = zeile.cloneNode(true);
+            link = neu.querySelector("a");
+            link.setAttribute("href", e.u); link.textContent = e.t;
+          } else if (li.parentNode.classList.contains("mainmenu")) {
+            // obere Leiste: schlichter Punkt ohne Aufklappmenü, wie „Sale“ oder „Fanshop“
+            zeile = li;
+            if (schonDa(zeile.parentNode, e.u)) return;
+            neu = document.createElement("li");
+            link = document.createElement("a");
+            link.setAttribute("href", e.u); link.setAttribute("itemprop", "name"); link.textContent = e.t;
+            neu.appendChild(link);
+          }
+          if (!neu) return;
           neu.setAttribute(MARKE, "");
-          var link = neu.querySelector("a");
-          link.setAttribute("href", e.u); link.textContent = e.t;
-          einsetzen(huelle, neu, e.w);
+          einsetzen(zeile, neu, e.w);
         });
       });
     });

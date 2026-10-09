@@ -2,7 +2,7 @@
   "name": "OSVMenue",
   "namespace": "OSVMenue",
   "type": "general",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "proprietary",
   "author": "OSV",
   "shortDescription": "Zusätzliche Einträge im Ceres-Hauptmenü (Rechner und Handy), ohne neue Kategorien.",
