@@ -26,6 +26,19 @@
           }
         }
       }
+    },
+    "Kopf": {
+      "label": "Seitenkopf",
+      "formFields": {
+        "kopfOhneSprung": {
+          "type": "checkBox",
+          "required": false,
+          "label": "Seitenkopf am Rechner ohne Sprung beim Scrollen (ab 992 px: Kopf läuft normal mit, nur die oberste Leiste bleibt stehen; ersetzt das Ceres-Umschalten auf „fest“, das beim ersten Scrollen die Seite verschiebt)",
+          "options": {
+            "defaultValue": "true"
+          }
+        }
+      }
     }
   }
 }

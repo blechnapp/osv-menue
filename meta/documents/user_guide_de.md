@@ -33,3 +33,7 @@ Ceres zeigt auf einer Oberkategorie die Kacheln der Unterkategorien nur, wenn di
 3. Container-Verknüpfung „OSV Menü Ausblenden (Seitenkopf)“ → `Ceres::Template.Style` (einmalig).
 
 Das Ausblenden geschieht per CSS im Seitenkopf: kein Aufblitzen, gleicher Seitencode für Besucher und Suchmaschinen. Footer-Links, Brotkrümel und die Kategorieseite selbst bleiben unberührt.
+
+## Seitenkopf ohne Sprung (ab 0.4.0)
+
+Ceres hält beim Scrollen Teile des Kopfs fest. Dafür schaltet es den Kopf beim ersten Scrollen auf „fest“ um, und genau in diesem Moment verschiebt sich die Seite (Core Web Vitals: CLS). Mit „Seitenkopf ohne Sprung“ (Konfiguration „Seitenkopf“, Standard an) läuft der Kopf am Rechner ab 992 px normal mit, nur die oberste Leiste (erster Baustein im Kopf, sofern nicht „unfixed“) bleibt oben stehen. Handy und Tablet unter 992 px bleiben wie von Ceres vorgesehen. Voraussetzung: Datenanbieter „OSV Menü Ausblenden + Kopf (Seitenkopf)“ → `Ceres::Template.Style`.

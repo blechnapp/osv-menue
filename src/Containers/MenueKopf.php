@@ -5,14 +5,19 @@ namespace OSVMenue\Containers;
 use Plenty\Plugin\ConfigRepository;
 
 /**
- * Blendet Kategorien im oberen Menü (Rechner und Handy) aus, per CSS im Seitenkopf.
- * Steht im Kopf, damit der Eintrag schon beim ersten Bild unsichtbar ist (kein Aufblitzen).
- * Gleicher Seitencode für alle Besucher und für Suchmaschinen; Footer, Brotkrümel und Kategorieseiten bleiben unberührt.
+ * Seitenkopf-Ausgabe (Container Ceres::Template.Style):
+ * 1. Blendet Kategorien im oberen Menü (Rechner und Handy) aus, per CSS – schon beim ersten Bild, kein Aufblitzen.
+ * 2. Seitenkopf ohne Sprung (Rechner): Ceres schaltet den Kopf beim ersten Scrollen von „läuft mit“ auf „fest“
+ *    um und verschiebt dabei die Seite (Layout-Verschiebung, CLS 0,1–0,3). Ab 992 px setzt das Skript nach dem
+ *    Start der Ceres-App die Klasse sticky-top, an der Ceres das Umschalten überspringt; das CSS lässt den Kopf
+ *    normal mitlaufen und hält nur die oberste Leiste fest, wie bisher. Handy unverändert.
+ * Gleicher Seitencode für alle Besucher und für Suchmaschinen.
  */
 class MenueKopf
 {
     public function call(ConfigRepository $config): string
     {
+        $aus = '';
         $regeln = [];
         foreach (explode(';', (string)$config->get('OSVMenue.ausblenden')) as $adresse) {
             $adresse = trim($adresse);
@@ -25,9 +30,28 @@ class MenueKopf
                 $regeln[] = $menue . ' .mainmenu > li:has(> a[href$=".de' . $adresse . '"])';
             }
         }
-        if (!count($regeln)) {
-            return '';
+        if (count($regeln)) {
+            $aus = '<style>/* OSV Menü: ausgeblendete Kategorien */' . implode(',', $regeln) . '{display:none !important;}</style>';
         }
-        return '<style>/* OSV Menü: ausgeblendete Kategorien */' . implode(',', $regeln) . '{display:none !important;}</style>';
+
+        $kopf = '';
+        $schalter = (string)$config->get('OSVMenue.kopfOhneSprung', 'true');
+        if ($schalter === 'true' || $schalter === '1') {
+            $kopf = '<style>/* OSV Menü: Seitenkopf ohne Sprung */@media (min-width:992px){'
+                . '#page-header.osv-kopf{position:static !important}'
+                . '#page-header.osv-kopf #page-header-parent>.widget:first-child:not(.unfixed){position:fixed !important;top:0 !important;left:0;right:0;z-index:1031 !important}'
+                . '}</style>'
+                . '<script>/* OSV Menü: Seitenkopf ohne Sprung */(function(){'
+                . 'function h(){return document.getElementById("page-header")}'
+                . 'function an(){var k=h();if(!k||innerWidth<992||k.classList.contains("fixed-top"))return;'
+                . 'var f=k.querySelector("#page-header-parent>.widget:first-child");if(!f||f.classList.contains("unfixed"))return;'
+                . 'k.style.paddingTop=f.getBoundingClientRect().height+"px";k.classList.add("osv-kopf","sticky-top")}'
+                . 'function aus(){var k=h();if(k&&k.classList.contains("osv-kopf")){k.classList.remove("osv-kopf","sticky-top");k.style.paddingTop=""}}'
+                . 'function los(n){var a=window.vueApp;if(!(a&&a._isMounted)&&n<60){setTimeout(function(){los(n+1)},50);return}an();'
+                . 'addEventListener("resize",function(){aus();an()})}'
+                . 'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){los(0)});else los(0)'
+                . '})();</script>';
+        }
+        return $aus . $kopf;
     }
 }
