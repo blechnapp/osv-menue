@@ -8,7 +8,22 @@
           "type": "text",
           "required": false,
           "label": "Einträge, getrennt mit ; – je Eintrag: Text | Ziel | vor oder nach | Adresse des Nachbarn. Beispiel: Herrnhuter Sterne | /herrnhuter-sterne/ | vor | /weihnachten/weihnachtssterne/",
-          "options": { "defaultValue": "Herrnhuter Sterne | /herrnhuter-sterne/ | vor | /weihnachten/weihnachtssterne/" }
+          "options": {
+            "defaultValue": "Herrnhuter Sterne | /herrnhuter-sterne/ | vor | /weihnachten/weihnachtssterne/"
+          }
+        }
+      }
+    },
+    "Ausblenden": {
+      "label": "Im Menü ausblenden",
+      "formFields": {
+        "ausblenden": {
+          "type": "text",
+          "required": false,
+          "label": "Kategorie-Adressen, die oben im Menü (Rechner und Handy) nicht erscheinen sollen, getrennt mit ; – Beispiel: /ostern-und-fruehling/. Die Kategorie bleibt in der Linkliste, damit ihre Unterkategorie-Kacheln funktionieren.",
+          "options": {
+            "defaultValue": ""
+          }
         }
       }
     }

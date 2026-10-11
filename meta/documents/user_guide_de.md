@@ -23,3 +23,13 @@ wird nichts doppelt eingefügt; Links in anderen Ebenen zählen nicht.
 - Handy: Ceres baut das Menü beim Blättern neu, das Skript setzt die Einträge nach jedem Tippen im Menü passend neu.
 - Der Link steht nicht im ausgelieferten HTML, Suchmaschinen sehen ihn erst nach Ausführen des Skripts.
 - Kein MutationObserver, kein Vue.component, kein Zugriff auf den Ceres-Store.
+
+## Kategorien oben im Menü ausblenden (ab 0.3.0)
+
+Ceres zeigt auf einer Oberkategorie die Kacheln der Unterkategorien nur, wenn die Kategorie in der Linkliste steht (= oben im Menü). Soll eine Kategorie (z. B. Ostern außerhalb der Saison) nicht oben im Menü stehen, ihre Seite aber trotzdem funktionieren:
+
+1. Kategorie in Plenty in der Linkliste lassen (Y).
+2. In der Konfiguration „Im Menü ausblenden“ ihre Adresse eintragen, z. B. `/ostern-und-fruehling/` (mehrere mit `;`).
+3. Container-Verknüpfung „OSV Menü Ausblenden (Seitenkopf)“ → `Ceres::Template.Style` (einmalig).
+
+Das Ausblenden geschieht per CSS im Seitenkopf: kein Aufblitzen, gleicher Seitencode für Besucher und Suchmaschinen. Footer-Links, Brotkrümel und die Kategorieseite selbst bleiben unberührt.
