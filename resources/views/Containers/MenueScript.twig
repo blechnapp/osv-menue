@@ -10,11 +10,15 @@
   function einsetzen(nachbarLi, neu, wohin) {
     nachbarLi.parentNode.insertBefore(neu, wohin === "nach" ? nachbarLi.nextSibling : nachbarLi);
   }
-  // Ist das Ziel in dieser Ebene schon verlinkt? Nur der erste Link je Zeile zählt, Untermenüs nicht
-  function schonDa(ebene, adresse) {
+  function text(t) { return String(t || "").replace(/\s+/g, " ").trim().toLowerCase(); }
+  // Steht der Eintrag in dieser Ebene schon (gleiche Adresse oder gleicher Text)? Nur der erste Link je Zeile
+  // zählt, Untermenüs nicht. Der Text fängt den Fall ab, dass der Shop den Punkt selbst ausliefert, aber mit
+  // anderer Adresse (z. B. Kategorie /ersatzteile/ mit Weiterleitung statt /weihnachten/ersatzteile/).
+  function schonDa(ebene, e) {
     return [].some.call(ebene.children, function (k) {
+      if (k.hasAttribute(MARKE)) return false;
       var x = k.querySelector("a[href]");
-      return x && norm(x.getAttribute("href")) === norm(adresse);
+      return x && (norm(x.getAttribute("href")) === norm(e.u) || text(x.textContent) === text(e.t));
     });
   }
   // Rechner: das Menü kommt fertig vom Server, einmal nach dem Start der Ceres-App ergänzen
@@ -27,14 +31,14 @@
           if (li.classList.contains("level1") && li.parentNode.classList.contains("collapse-inner")) {
             // Aufklappmenü: Hülle <li><ul class="collapse-inner"><li class="level1">… des Nachbarn übernehmen
             zeile = li.parentNode.parentNode;
-            if (schonDa(zeile.parentNode, e.u)) return;
+            if (schonDa(zeile.parentNode, e)) return;
             neu = zeile.cloneNode(true);
             link = neu.querySelector("a");
             link.setAttribute("href", e.u); link.textContent = e.t;
           } else if (li.parentNode.classList.contains("mainmenu")) {
             // obere Leiste: schlichter Punkt ohne Aufklappmenü, wie „Sale“ oder „Fanshop“
             zeile = li;
-            if (schonDa(zeile.parentNode, e.u)) return;
+            if (schonDa(zeile.parentNode, e)) return;
             neu = document.createElement("li");
             link = document.createElement("a");
             link.setAttribute("href", e.u); link.setAttribute("itemprop", "name"); link.textContent = e.t;
@@ -58,6 +62,7 @@
       nachbarn(aktiv, e.n).forEach(function (a) {
         var li = a.closest("li");
         if (!li || li.parentNode !== aktiv) return;
+        if (schonDa(aktiv, e)) return;
         var neu = document.createElement("li");
         neu.className = "ddown"; neu.setAttribute(MARKE, "");
         var link = document.createElement("a");
