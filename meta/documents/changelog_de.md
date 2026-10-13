@@ -2,6 +2,12 @@
 
 Neueste Version oben. Jede Version ist ein Git-Tag; im Plugin-Set wird der Tag gewählt.
 
+## 0.4.1 (13.10.2026)
+
+- Seitenkopf ohne Sprung wirkt jetzt auch, wenn oben keine feste Leiste steht (z. B. nach Ende des Gewinnspiels): Dann läuft der ganze Kopf mit. 0.4.0 tat in diesem Fall nichts, und der Sprung kam zurück
+- Im ShopBuilder-Editor ausgeschaltet, dort bleibt das Ceres-Verhalten
+- Fehler im Skript werden abgefangen; fehlt der erwartete Kopfaufbau, bleibt alles wie von Ceres vorgesehen
+
 ## 0.4.0 (11.10.2026)
 
 - Neu: Seitenkopf am Rechner ohne Sprung beim Scrollen (Konfiguration „Seitenkopf“, Standard an). Ceres schaltet den Kopf beim ersten Scrollen von „läuft mit“ auf „fest“ um und verschiebt dabei die Seite; Chrome zählt das als Layout-Verschiebung (gemessen CLS 0,11–0,32 je Seite und Breite, Search Console Computer: alle URLs „zu optimieren“). Ab 992 px läuft der Kopf jetzt normal mit, nur die oberste Leiste bleibt stehen wie bisher. Gemessen danach: Scroll-Verschiebung 0 bis 0,017, Aussehen unverändert, Handy unverändert
