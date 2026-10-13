@@ -2,6 +2,10 @@
 
 Neueste Version oben. Jede Version ist ein Git-Tag; im Plugin-Set wird der Tag gewählt.
 
+## 0.4.2 (13.10.2026)
+
+- Seitenkopf ohne Sprung erzeugt beim Laden keine eigene Verschiebung mehr. 0.4.1 setzte den Platzhalter für die feste oberste Leiste an den äußeren Kopf; der innere Kopfkasten rückte dadurch rechnerisch um die Leistenhöhe nach unten, sichtbar war das nicht, Chrome zählte es trotzdem (0,005–0,015 je Seite). Der Platzhalter sitzt jetzt am inneren Kopfkasten selbst. Gemessen: Ladeverschiebung gleich wie ohne Plugin, Scrollen 0, Lage aller Teile unverändert
+
 ## 0.4.1 (13.10.2026)
 
 - Seitenkopf ohne Sprung wirkt jetzt auch, wenn oben keine feste Leiste steht (z. B. nach Ende des Gewinnspiels): Dann läuft der ganze Kopf mit. 0.4.0 tat in diesem Fall nichts, und der Sprung kam zurück

@@ -46,10 +46,13 @@ class MenueKopf
                 . 'function an(){try{var k=h();if(!k||innerWidth<992||k.classList.contains("fixed-top"))return;'
                 . 'if(window.App&&App.isShopBuilder)return;'
                 . 'if(!k.querySelector("#page-header-parent"))return;'
-                . 'var f=k.querySelector("#page-header-parent>.widget:first-child");'
-                . 'k.style.paddingTop=(f&&!f.classList.contains("unfixed"))?f.getBoundingClientRect().height+"px":"";'
+                // Platzhalter für die feste oberste Leiste am #page-header-parent selbst: so behält dieser Kasten
+                // seine Lage, und Google zählt beim Umstellen keine Verschiebung (am #page-header wären es 0,005–0,015)
+                . 'var p=k.querySelector("#page-header-parent"),f=k.querySelector("#page-header-parent>.widget:first-child");'
+                . 'p.style.paddingTop=(f&&!f.classList.contains("unfixed"))?f.getBoundingClientRect().height+"px":"";'
                 . 'k.classList.add("osv-kopf","sticky-top")}catch(e){}}'
-                . 'function aus(){try{var k=h();if(k&&k.classList.contains("osv-kopf")){k.classList.remove("osv-kopf","sticky-top");k.style.paddingTop=""}}catch(e){}}'
+                . 'function aus(){try{var k=h();if(k&&k.classList.contains("osv-kopf")){k.classList.remove("osv-kopf","sticky-top");'
+                . 'var p=k.querySelector("#page-header-parent");if(p)p.style.paddingTop=""}}catch(e){}}'
                 . 'function los(n){var a=window.vueApp;if(!(a&&a._isMounted)&&n<60){setTimeout(function(){los(n+1)},50);return}an();'
                 . 'addEventListener("resize",function(){aus();an()})}'
                 . 'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){los(0)});else los(0)'
