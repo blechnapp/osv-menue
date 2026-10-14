@@ -11,6 +11,9 @@ use Plenty\Plugin\ConfigRepository;
  *    um und verschiebt dabei die Seite (Layout-Verschiebung, CLS 0,1–0,3). Ab 992 px setzt das Skript nach dem
  *    Start der Ceres-App die Klasse sticky-top, an der Ceres das Umschalten überspringt; das CSS lässt den Kopf
  *    normal mitlaufen und hält nur die oberste Leiste fest, wie bisher. Handy unverändert.
+ * 3. Kasse ohne Sprung: Die Kasse (Conversion Checkout, auch die Anmelde-/Gastseite davor) bindet die Shop-CSS aus
+ *    dem HeaderPUB nicht ein, diesen Container aber schon. Ceres baut den Inhalt dort erst im Browser auf, die
+ *    Fußzeile springt von ca. 160 auf 690 px (CLS 0,09–0,14). Inhaltsbereich mindestens bildschirmhoch.
  * Gleicher Seitencode für alle Besucher und für Suchmaschinen.
  */
 class MenueKopf
@@ -58,6 +61,11 @@ class MenueKopf
                 . 'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){los(0)});else los(0)'
                 . '})();</script>';
         }
-        return $aus . $kopf;
+        $kasse = '';
+        $schalterKasse = (string)$config->get('OSVMenue.kasseOhneSprung', 'true');
+        if ($schalterKasse === 'true' || $schalterKasse === '1') {
+            $kasse = '<style>/* OSV Menü: Kasse ohne Sprung */body.isCheckout #page-body{min-height:100vh}</style>';
+        }
+        return $aus . $kopf . $kasse;
     }
 }

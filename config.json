@@ -37,6 +37,14 @@
           "options": {
             "defaultValue": "true"
           }
+        },
+        "kasseOhneSprung": {
+          "type": "checkBox",
+          "required": false,
+          "label": "Kasse ohne Sprung (Inhaltsbereich der Kasse und der Anmeldeseite davor mindestens bildschirmhoch; sonst springt die Fußzeile beim Aufbau nach unten)",
+          "options": {
+            "defaultValue": "true"
+          }
         }
       }
     }

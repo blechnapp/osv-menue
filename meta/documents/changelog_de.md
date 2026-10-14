@@ -2,6 +2,10 @@
 
 Neueste Version oben. Jede Version ist ein Git-Tag; im Plugin-Set wird der Tag gewählt.
 
+## 0.4.3 (14.10.2026)
+
+- Kasse ohne Sprung: In der Kasse und auf der Anmeldeseite davor ist der Inhaltsbereich jetzt mindestens bildschirmhoch. Ceres baut den Inhalt dort erst im Browser auf, die Fußzeile sprang dabei von oben nach unten (Rechner 0,09–0,14). Gemessen mit derselben Regel: 1366 px 0,05, 992 px 0,07–0,08, 1920 px 0,03, Handy bis 0,08. Schalter „Kasse ohne Sprung“ (Standard an)
+
 ## 0.4.2 (13.10.2026)
 
 - Seitenkopf ohne Sprung erzeugt beim Laden keine eigene Verschiebung mehr. 0.4.1 setzte den Platzhalter für die feste oberste Leiste an den äußeren Kopf; der innere Kopfkasten rückte dadurch rechnerisch um die Leistenhöhe nach unten, sichtbar war das nicht, Chrome zählte es trotzdem (0,005–0,015 je Seite). Der Platzhalter sitzt jetzt am inneren Kopfkasten selbst. Gemessen: Ladeverschiebung gleich wie ohne Plugin, Scrollen 0, Lage aller Teile unverändert
